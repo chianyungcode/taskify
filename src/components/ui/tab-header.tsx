@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 import CustomModal from "./custom-modal";
 import FormTask from "./form-task";
-import { useTodoStore } from "../../lib/zustand-store/tasks-store";
+import { useTodoStore } from "@/lib/zustand-store/tasks-store";
 
 const TabHeader = () => {
   const [modalOpen, setModalOpen] = useState(false);
