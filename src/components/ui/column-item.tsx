@@ -78,16 +78,7 @@ const ColumnItem = ({ columnName, taskItems, icon: Icon }: ColumnItemProps) => {
           ? null
           : taskItems.map((task) => (
               <div key={task.id}>
-                <Card
-                  id={task.id}
-                  icon={Icon}
-                  taskName={task.taskName}
-                  status={task.status}
-                  label={task.label}
-                  startDate={task.startDate}
-                  endDate={task.endDate}
-                  openModal={handleModalOpen}
-                />
+                <Card task={task} icon={Icon} openModal={handleModalOpen} />
               </div>
             ))}
         <div
