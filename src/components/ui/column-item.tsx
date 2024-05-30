@@ -24,30 +24,44 @@ const ColumnItem = ({ columnName, taskItems, icon: Icon }: ColumnItemProps) => {
 
   const handleModalOpen = (id?: string) => {
     setModalOpen(true);
-
-    if (!id) {
-      setFormTask(true);
-    } else {
+    if (id) {
       setFormTask(false);
-      const task = getTaskById(id);
-      setTaskDetails(task);
+      setTaskDetails(getTaskById(id));
+    } else {
+      setFormTask(true);
     }
+  };
+
+  const renderModalContent = () => {
+    if (formTask) {
+      return (
+        <FormTask
+          closeModal={() => setModalOpen(false)}
+          statusTask={statusTask}
+        />
+      );
+    }
+    return (
+      <EditFormTask
+        taskData={taskDetails}
+        onClose={() => setModalOpen(false)}
+      />
+    );
+  };
+
+  const renderTaskItems = () => {
+    if (isCollapse) return null;
+    return taskItems.map((task) => (
+      <div key={task.id}>
+        <Card task={task} icon={Icon} openModal={handleModalOpen} />
+      </div>
+    ));
   };
 
   return (
     <>
       <CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        {formTask ? (
-          <FormTask
-            onClose={() => setModalOpen(false)}
-            statusTask={statusTask}
-          />
-        ) : (
-          <EditFormTask
-            taskData={taskDetails}
-            onClose={() => setModalOpen(false)}
-          />
-        )}
+        {renderModalContent()}
       </CustomModal>
 
       <div className="border-dashed bg-[#F7F8F7] border-2 px-4 py-3 space-y-4 rounded-xl group">
@@ -74,13 +88,7 @@ const ColumnItem = ({ columnName, taskItems, icon: Icon }: ColumnItemProps) => {
             />
           </div>
         </div>
-        {isCollapse
-          ? null
-          : taskItems.map((task) => (
-              <div key={task.id}>
-                <Card task={task} icon={Icon} openModal={handleModalOpen} />
-              </div>
-            ))}
+        {renderTaskItems()}
         <div
           className={cn(
             "py-2 opacity-0 bg-white flex justify-center items-center rounded-lg group-hover:opacity-100 ease-out duration-300 transition-opacity cursor-pointer"

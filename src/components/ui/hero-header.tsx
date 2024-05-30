@@ -1,9 +1,9 @@
-import { useTodoStore } from "../../lib/zustand-store/tasks-store";
+import { useTasksStore } from "../../lib/zustand-store/tasks-store";
 import { TaskType } from "../../types/task";
 import { CheckCircle2Icon, CircleDashed, TrendingUp } from "lucide-react";
 
 const HeroHeader = () => {
-  const { tasks } = useTodoStore((state) => state);
+  const { tasks } = useTasksStore((state) => state);
   const filterTasksByStatus = (status: string) => {
     const filteredTasks: TaskType[] = tasks.filter(
       (task) => task.status === status

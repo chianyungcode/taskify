@@ -1,20 +1,21 @@
-import { useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { setTasksToLocal } from "../../utils/data-utils";
-import { useTodoStore } from "../../lib/zustand-store/tasks-store";
+import { useTasksStore } from "../../lib/zustand-store/tasks-store";
+import ComboboxPopover from "./combobox-popover";
 
 interface FormTaskProps {
-  onClose: () => void;
+  closeModal: () => void;
   statusTask?: string;
 }
 
-const FormTask = ({ onClose, statusTask }: FormTaskProps) => {
-  const { tasks, addTask } = useTodoStore((state) => state);
+const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
+  const { tasks, addTask } = useTasksStore((state) => state);
+  const [selectedStatus, setSelectedStatus] = useState(statusTask || "");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setTasksToLocal(tasks);
-    }
+    setTasksToLocal(tasks);
   }, [tasks]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,18 +25,22 @@ const FormTask = ({ onClose, statusTask }: FormTaskProps) => {
     const newTask = {
       id: nanoid(),
       taskName: formData.get("task-name") as string,
-      status: formData.get("status") as string,
+      status: selectedStatus,
       label: formData.get("label") as string,
       startDate: new Date(formData.get("start-date") as string),
       endDate: new Date(formData.get("end-date") as string),
     };
 
     addTask(newTask);
-    onClose();
+    closeModal();
+  };
+
+  const getStatus = (status: string) => {
+    setSelectedStatus(status);
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <header>
         <h1 className="text-2xl font-semibold">Add Task</h1>
       </header>
@@ -45,52 +50,50 @@ const FormTask = ({ onClose, statusTask }: FormTaskProps) => {
         onSubmit={handleSubmit}
         className="space-y-2 flex flex-col"
       >
-        <label htmlFor="task-name">Task name</label>
         <input
           type="text"
           id="task-name"
           name="task-name"
-          className="px-2 py-1 rounded-lg outline-none border border-gray-200"
+          className="px-2 py-1 rounded-lg outline-none border-none text-xl border-gray-200 w-full font-medium"
+          placeholder="Task title"
         />
-        <label htmlFor="status">Status</label>
-        <select
-          id="status"
-          name="status"
-          value={statusTask}
-          onChange={() => {}}
-          className="px-2 py-1 rounded-lg outline-none border border-gray-200"
-        >
-          <option value="To do">To do</option>
-          <option value="In progress">In progress</option>
-          <option value="Completed">Completed</option>
-        </select>
-        <label htmlFor="label">Label</label>
-        <input
-          required
-          type="text"
-          id="label"
-          name="label"
-          className="px-2 py-1 rounded-lg outline-none border border-gray-200"
+        <textarea
+          id="description"
+          name="description"
+          className="px-2 py-1 rounded-lg outline-none border-none border-gray-200 w-full h-[800px] resize-none"
+          placeholder="Add description..."
         />
-        <label htmlFor="start-date">Start date</label>
-        <input
-          required
-          type="datetime-local"
-          id="start-date"
-          name="start-date"
-          className="px-2 py-1 rounded-lg outline-none border border-gray-200"
-        />
-        <label htmlFor="end-date">End date</label>
-        <input
-          required
-          type="datetime-local"
-          id="end-date"
-          name="end-date"
-          className="px-2 py-1 rounded-lg outline-none border border-gray-200"
-        />
+        <div className="flex gap-x-2 items-center">
+          <ComboboxPopover
+            statusByColumn={statusTask || "To do"}
+            getStatus={getStatus}
+          />
+          <input
+            required
+            type="text"
+            id="label"
+            name="label"
+            className="px-2 py-1 rounded-lg outline-none border border-gray-200"
+            placeholder="Label..."
+          />
+          <input
+            required
+            type="datetime-local"
+            id="start-date"
+            name="start-date"
+            className="px-2 py-1 rounded-lg outline-none border border-gray-200"
+          />
+          <input
+            required
+            type="datetime-local"
+            id="end-date"
+            name="end-date"
+            className="px-2 py-1 rounded-lg outline-none border border-gray-200"
+          />
+        </div>
         <button
           type="submit"
-          className="bg-black text-gray-50 rounded-lg px-2 py-1"
+          className="bg-black text-gray-50 rounded-lg px-4 py-1.5 w-max self-end"
         >
           Tambah tugas
         </button>

@@ -29,50 +29,7 @@ export const initialState: TasksState = {
   sortOrder: "asc",
 };
 
-export const useTasksStore = (initState: TasksState = initialState) => {
-  return create<TasksStore>()((set) => ({
-    ...initState,
-    addTask: (newTask: TaskType) =>
-      set((state) => ({ tasks: [...state.tasks, newTask] })),
-    updateTask: (id: string, updatedData: TaskType) =>
-      set((state) => {
-        const updatedTasks = state.tasks.map((task) => {
-          if (task.id === id) {
-            return { ...task, ...updatedData };
-          }
-          return task;
-        });
-
-        return {
-          tasks: updatedTasks,
-        };
-      }),
-    deleteTask: (id: string) =>
-      set((state) => {
-        const taskDeleted = state.tasks.findIndex((task) => task.id === id);
-        const updatedTasks = [...state.tasks];
-        updatedTasks.splice(taskDeleted, 1);
-        return {
-          tasks: updatedTasks,
-        };
-      }),
-    sortTasks: () =>
-      set((state) => {
-        const sortedTasks = state.tasks.sort((a, b) => {
-          const dateA = new Date(a.startDate).getTime();
-          const dateB = new Date(b.startDate).getTime();
-          return state.sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-        });
-
-        return {
-          tasks: sortedTasks,
-          sortOrder: state.sortOrder === "asc" ? "desc" : "asc",
-        };
-      }),
-  }));
-};
-
-export const useTodoStore = create<TasksStore>((set) => ({
+export const useTasksStore = create<TasksStore>((set) => ({
   ...initialState,
   addTask: (newTask: TaskType) =>
     set((state) => ({ tasks: [...state.tasks, newTask] })),
@@ -111,4 +68,4 @@ export const useTodoStore = create<TasksStore>((set) => ({
         sortOrder: state.sortOrder === "asc" ? "desc" : "asc",
       };
     }),
-}))
+}));

@@ -22,7 +22,7 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
           event.stopPropagation();
         }}
         className={cn(
-          "bg-white rounded-xl shadow p-6 transition-all ease-out duration-300 w-96",
+          "bg-white rounded-xl shadow p-6 transition-all ease-out duration-300 w-full max-w-3xl h-[1024px] ",
           isOpen ? "scale-100 opacity-100" : "scale-105 opacity-0"
         )}
       >

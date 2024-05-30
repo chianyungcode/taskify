@@ -7,16 +7,16 @@ import {
 import { useState } from "react";
 import CustomModal from "./custom-modal";
 import FormTask from "./form-task";
-import { useTodoStore } from "@/lib/zustand-store/tasks-store";
+import { useTasksStore } from "@/lib/zustand-store/tasks-store";
 
 const TabHeader = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { sortTasks, sortOrder } = useTodoStore((state) => state);
+  const { sortTasks, sortOrder } = useTasksStore((state) => state);
 
   return (
     <>
       <CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <FormTask onClose={() => setModalOpen(false)} />
+        <FormTask closeModal={() => setModalOpen(false)} />
       </CustomModal>
 
       <div className=" flex justify-between items-center border-b py-2">

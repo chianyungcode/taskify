@@ -39,11 +39,3 @@ export const deleteTaskById = (id: string) => {
     setTasksToLocal(tasks);
   }
 };
-
-export const countByStatus = (status: string) => {
-  const tasks: TaskType[] = getTasksFromLocal();
-
-  const filteredByStatus = tasks.filter((task) => task.status === status);
-
-  return filteredByStatus;
-};

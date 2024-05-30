@@ -1,5 +1,10 @@
-import { TaskType } from "@/types/task";
-import { BadgeCheckIcon, CircleDashed, TrendingUp } from "lucide-react";
+import { StatusTask, TaskType, TTask } from "@/types/task";
+import {
+  BadgeCheckIcon,
+  CircleDashed,
+  LucideIcon,
+  TrendingUp,
+} from "lucide-react";
 
 type ColumnType = {
   id: string;
@@ -91,6 +96,50 @@ export const columns: ColumnType[] = [
         label: "Personal",
         startDate: new Date("2024-05-10"),
         endDate: new Date("2024-05-19"),
+      },
+    ],
+  },
+];
+
+enum TaskCategoriesEnum {
+  TODO = "TODO",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+}
+
+type TaskCategoriesType = {
+  id: string;
+  name: string;
+  value: TaskCategoriesEnum;
+  icon: LucideIcon;
+  taskItems: TTask[];
+};
+
+export const taskCategoriesInitialData: TaskCategoriesType[] = [
+  {
+    id: "12412421",
+    name: "To do",
+    value: TaskCategoriesEnum.TODO,
+    icon: CircleDashed,
+    taskItems: [
+      {
+        id: "19249219421",
+        title: "Kerjain PR",
+        description: "Anjay",
+        status: {
+          value: StatusTask.TODO,
+          name: "To do",
+          icon: CircleDashed,
+        },
+        label: [
+          {
+            id: "81838131",
+            name: "School",
+            value: "School",
+          },
+        ],
+        startDate: new Date("2024-06-01"),
+        endDate: new Date("2024-06-05"),
       },
     ],
   },

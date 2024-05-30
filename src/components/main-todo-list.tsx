@@ -1,10 +1,10 @@
 import ColumnItem from "../components/ui/column-item";
 import { columns } from "../data/initialData";
-import { useTodoStore } from "../lib/zustand-store/tasks-store";
+import { useTasksStore } from "../lib/zustand-store/tasks-store";
 import CommandMain from "./ui/command-main";
 
 const MainTodoList = () => {
-  const { tasks } = useTodoStore((state) => state);
+  const { tasks } = useTasksStore((state) => state);
 
   return (
     <div className="md:grid md:grid-cols-3 gap-x-4 md:space-y-0 space-y-2 h-screen">
