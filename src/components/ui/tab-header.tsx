@@ -1,18 +1,17 @@
-
 import {
   PlusCircle,
   SortAscIcon,
   SortDescIcon,
   SquareKanban,
 } from "lucide-react";
-import  { useState } from "react";
+import { useState } from "react";
 import CustomModal from "./custom-modal";
 import FormTask from "./form-task";
-import { useTasksStore } from "@/providers/tasks-store-provider";
+import { useTodoStore } from "../../lib/zustand-store/tasks-store";
 
 const TabHeader = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { sortTasks, sortOrder } = useTasksStore((state) => state);
+  const { sortTasks, sortOrder } = useTodoStore((state) => state);
 
   return (
     <>

@@ -1,5 +1,5 @@
-import { useTasksStore } from "@/providers/tasks-store-provider";
-import { TaskType } from "@/types/data";
+import { useTodoStore } from "../../lib/zustand-store/tasks-store";
+import { TaskType } from "../../types/task";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -9,7 +9,7 @@ interface EditFormTaskProps {
 }
 
 const EditFormTask = ({ onClose, taskData }: EditFormTaskProps) => {
-  const { updateTask, deleteTask } = useTasksStore((state) => state);
+  const { updateTask, deleteTask } = useTodoStore((state) => state);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

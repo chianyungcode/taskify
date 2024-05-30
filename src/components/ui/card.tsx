@@ -14,7 +14,7 @@ const Card: React.FC<CardProps> = ({
   id,
   icon: Icon,
   taskName,
-  status,
+  // status,
   label,
   startDate,
   endDate,

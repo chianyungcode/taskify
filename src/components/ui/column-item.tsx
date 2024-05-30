@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { ChevronDown, Plus } from "lucide-react";
-import { TaskType } from "@/types/task";
-import { getTaskById } from "@/utils/data-utils";
+import { TaskType } from "../../types/task";
+import { getTaskById } from "../../utils/data-utils";
 import Card from "./card";
 import CustomModal from "./custom-modal";
 import EditFormTask from "./edit-form-task";
-import { cn } from "@/lib/cn";
+import { cn } from "../../lib/cn";
 import FormTask from "./form-task";
 
 interface ColumnItemProps {

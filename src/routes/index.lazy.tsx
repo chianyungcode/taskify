@@ -1,3 +1,6 @@
+import MainTodoList from "../components/main-todo-list";
+import HeroHeader from "../components/ui/hero-header";
+import TabHeader from "../components/ui/tab-header";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
@@ -6,8 +9,12 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
+    <main className="max-w-[1440px] mx-auto">
+      <div id="container" className="max-w-screen-xl px-8 mx-auto space-y-4">
+        <HeroHeader />
+        <TabHeader />
+        <MainTodoList />
+      </div>
+    </main>
   );
 }

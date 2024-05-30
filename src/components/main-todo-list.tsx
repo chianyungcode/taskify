@@ -1,9 +1,9 @@
-import ColumnItem from "@/components/ui/column-item";
-import { columns } from "@/data/initialData";
-import { useTasksStore } from "@/providers/tasks-store-provider";
+import ColumnItem from "../components/ui/column-item";
+import { columns } from "../data/initialData";
+import { useTodoStore } from "../lib/zustand-store/tasks-store";
 
 const MainTodoList = () => {
-  const { tasks } = useTasksStore((state) => state);
+  const { tasks } = useTodoStore((state) => state);
 
   return (
     <div className="md:grid md:grid-cols-3 gap-x-4 md:space-y-0 space-y-2 h-screen">

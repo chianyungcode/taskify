@@ -1,9 +1,7 @@
-
 import { useEffect } from "react";
-import { TaskType } from "@/types/task";
 import { nanoid } from "nanoid";
-import { setTasksToLocal } from "@/utils/data-utils";
-import { useTasksStore } from "@/providers/tasks-store-provider";
+import { setTasksToLocal } from "../../utils/data-utils";
+import { useTodoStore } from "../../lib/zustand-store/tasks-store";
 
 interface FormTaskProps {
   onClose: () => void;
@@ -11,7 +9,7 @@ interface FormTaskProps {
 }
 
 const FormTask = ({ onClose, statusTask }: FormTaskProps) => {
-  const { tasks, addTask } = useTasksStore((state) => state);
+  const { tasks, addTask } = useTodoStore((state) => state);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
