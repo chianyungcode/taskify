@@ -1,65 +1,59 @@
 import { useState } from "react";
+
 import { ChevronDown, Plus } from "lucide-react";
+
 import { getTaskById } from "../../utils/data-utils-2";
-import CustomModal from "./custom-modal";
 import { cn } from "../../lib/cn";
-import { Category as CategoryType, Task } from "@/types";
+import { initialStatusTask } from "@/data/initData";
+
+import CustomModal from "./custom-modal";
 import CardV2 from "./card-v2";
 import EditFormTaskV2 from "./edit-form-task-v2";
 import FormTaskV2 from "./form-task-v2";
 
+import { Category as CategoryType, Task } from "@/types";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
+import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
 interface CategoryProps {
   category: CategoryType;
   tasks: Task[];
 }
 
 const Category = ({ category, tasks }: CategoryProps) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const { setIsModalOpen } = useModalStore((state) => state);
+  const { setStatusTask } = useStatusTaskStore((state) => state);
+
   const [isCollapse, setIsCollapse] = useState(false);
-  const [formTask, setFormTask] = useState(true);
+  const [isFormTask, setIsFormTask] = useState(true);
   const [taskDetails, setTaskDetails] = useState<Task | null>(null);
-  const [statusTask, setStatusTask] = useState("");
 
   const handleModalOpen = (id?: string) => {
-    setModalOpen(true);
+    setIsModalOpen(true);
     if (id) {
-      setFormTask(false);
+      setIsFormTask(false);
       setTaskDetails(getTaskById(id));
     } else {
-      setFormTask(true);
+      setIsFormTask(true);
     }
   };
 
-  const renderModalContent = () => {
-    if (formTask) {
-      return (
-        <FormTaskV2
-          closeModal={() => setModalOpen(false)}
-          statusTask={statusTask}
-        />
-      );
-    }
-    return (
-      <EditFormTaskV2
-        taskData={taskDetails}
-        onClose={() => setModalOpen(false)}
-      />
+  const updateStatusTask = () => {
+    const statusByCategory = initialStatusTask.find(
+      (initialStatus) => category.value === initialStatus.value
     );
-  };
 
-  const renderTaskItems = () => {
-    if (isCollapse) return null;
-    return tasks.map((task) => (
-      <div key={task.id}>
-        <CardV2 task={task} icon={category.icon} openModal={handleModalOpen} />
-      </div>
-    ));
+    // !TODO ini perbaiki jangan pakai tanda seru
+    setStatusTask(statusByCategory!);
   };
 
   return (
     <>
-      <CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        {renderModalContent()}
+      <CustomModal>
+        {isFormTask ? (
+          <FormTaskV2 />
+        ) : (
+          <EditFormTaskV2 taskData={taskDetails} />
+        )}
       </CustomModal>
 
       <div className="border-dashed bg-[#F7F8F7] border-2 px-4 py-3 space-y-4 rounded-xl group">
@@ -80,19 +74,28 @@ const Category = ({ category, tasks }: CategoryProps) => {
             <Plus
               className="w-4 h-4"
               onClick={() => {
-                setStatusTask(category.value);
+                updateStatusTask();
                 handleModalOpen();
               }}
             />
           </div>
         </div>
-        {renderTaskItems()}
+        {!isCollapse &&
+          tasks.map((task) => (
+            <div key={task.id}>
+              <CardV2
+                task={task}
+                icon={category.icon}
+                openModal={handleModalOpen}
+              />
+            </div>
+          ))}
         <div
           className={cn(
             "py-2 opacity-0 bg-white flex justify-center items-center rounded-lg group-hover:opacity-100 ease-out duration-300 transition-opacity cursor-pointer"
           )}
           onClick={() => {
-            setStatusTask(category.value);
+            updateStatusTask();
             handleModalOpen();
           }}
         >

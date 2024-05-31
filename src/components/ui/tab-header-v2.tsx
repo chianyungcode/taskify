@@ -4,21 +4,19 @@ import {
   SortDescIcon,
   SquareKanban,
 } from "lucide-react";
-import { useState } from "react";
-import CustomModal from "./custom-modal";
+
 import { useTasksStorev2 } from "@/lib/zustand-store/tasks-store-v2";
-import FormTaskV2 from "./form-task-v2";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
+import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
+import { initialStatusTask } from "@/data/initData";
 
 const TabHeaderV2 = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const { setIsModalOpen } = useModalStore((state) => state);
+  const { setStatusTask } = useStatusTaskStore((state) => state);
   const { sortTasks, sortOrder } = useTasksStorev2((state) => state);
 
   return (
     <>
-      <CustomModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <FormTaskV2 closeModal={() => setModalOpen(false)} />
-      </CustomModal>
-
       <div className=" flex justify-between items-center border-b py-2">
         <div className="flex gap-x-4">
           <div className="flex gap-x-1 items-center">
@@ -33,7 +31,10 @@ const TabHeaderV2 = () => {
         <div className="flex gap-x-2 items-center">
           <button
             className="md:px-4 md:py-2 px-4 py-2 bg-black text-white rounded-3xl h-fit flex gap-x-2 items-center"
-            onClick={() => setModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true);
+              setStatusTask(initialStatusTask[0]);
+            }}
           >
             <p className="text-xs md:text-base">New task</p>
           </button>

@@ -1,26 +1,29 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { setTasksToLocal } from "../../utils/data-utils-2";
-import { useTasksStorev2 } from "../../lib/zustand-store/tasks-store-v2";
-import ComboboxPopover from "./combobox-popover";
-import { Status, Task } from "@/types";
-import { initialStatusTask } from "@/data/initData";
 
-interface FormTaskV2Props {
-  closeModal: () => void;
-  statusTask?: string;
-}
+import { Label, Task } from "@/types";
+import { initialLabelTask } from "@/data/initData";
 
-const FormTaskV2 = ({ closeModal, statusTask }: FormTaskV2Props) => {
+import { setTasksToLocal } from "@/utils/data-utils-2";
+import { useTasksStorev2 } from "@/lib/zustand-store/tasks-store-v2";
+import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
+
+import ComboboxLabel from "./combobox-label";
+import ComboboxStatus from "./combobox-status";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
+
+const FormTaskV2 = () => {
   const { tasks, addTask } = useTasksStorev2((state) => state);
-  const [selectedStatus, setSelectedStatus] = useState<Status>(
-    initialStatusTask[0]
+  const { statusTask } = useStatusTaskStore((state) => state);
+  const { setIsModalOpen } = useModalStore((state) => state);
+
+  const [selectedLabel, setSelectedLabel] = useState<Label>(
+    initialLabelTask[0]
   );
 
   useEffect(() => {
     setTasksToLocal(tasks);
-  }, [tasks]);
+  }, [tasks, statusTask]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,22 +35,29 @@ const FormTaskV2 = ({ closeModal, statusTask }: FormTaskV2Props) => {
       description: formData.get("description") as string,
       priority: 1,
       status: {
-        id: selectedStatus.id,
-        name: selectedStatus.name,
-        value: selectedStatus.value,
-        icon: selectedStatus.icon,
+        id: statusTask.id,
+        name: statusTask.name,
+        value: statusTask.value,
+        icon: statusTask.icon,
       },
-      labels: [],
+      labels: [
+        {
+          id: selectedLabel.id,
+          name: selectedLabel.name,
+          value: selectedLabel.value,
+          color: selectedLabel.color,
+        },
+      ],
       startDate: new Date(formData.get("start-date") as string),
       endDate: new Date(formData.get("end-date") as string),
     };
 
     addTask(newTask);
-    closeModal();
+    setIsModalOpen(false);
   };
 
-  const getStatus = (status: Status) => {
-    setSelectedStatus(status);
+  const getLabel = (label: Label) => {
+    setSelectedLabel(label);
   };
 
   return (
@@ -56,7 +66,6 @@ const FormTaskV2 = ({ closeModal, statusTask }: FormTaskV2Props) => {
         <h1 className="text-2xl font-semibold">Add Task</h1>
       </header>
       <form
-        action=""
         id="task-form"
         onSubmit={handleSubmit}
         className="space-y-2 flex flex-col"
@@ -75,18 +84,8 @@ const FormTaskV2 = ({ closeModal, statusTask }: FormTaskV2Props) => {
           placeholder="Add description..."
         />
         <div className="flex gap-x-2 items-center">
-          <ComboboxPopover
-            // statusByCategory={statusTask || "To do"}
-            getStatus={getStatus}
-          />
-          <input
-            required
-            type="text"
-            id="label"
-            name="label"
-            className="px-2 py-1 rounded-lg outline-none border border-gray-200"
-            placeholder="Label..."
-          />
+          <ComboboxStatus />
+          <ComboboxLabel getLabel={getLabel} />
           <input
             required
             type="datetime-local"

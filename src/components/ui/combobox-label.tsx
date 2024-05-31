@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -13,27 +12,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { initialStatusTask } from "@/data/initData";
+import { initialLabelTask } from "@/data/initData";
 import { useEffect, useState } from "react";
-import { Status } from "@/types";
+import { Label } from "@/types";
 
-interface ComboboxPopoverProps {
-  getStatus: (status: Status) => void;
+interface ComboboxLabelProps {
+  getLabel: (label: Label) => void;
 }
 
-function ComboboxPopover({ getStatus }: ComboboxPopoverProps) {
+function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<Status>(
-    initialStatusTask[0]
+  const [selectedLabel, setSelectedLabel] = useState<Label>(
+    initialLabelTask[0]
   );
 
   useEffect(() => {
-    getStatus(selectedStatus);
-  }, [getStatus, selectedStatus]);
+    getLabel(selectedLabel);
+  }, [getLabel, selectedLabel]);
 
   return (
     <div className="flex items-center space-x-4">
-      <p className="text-sm text-muted-foreground">Status</p>
+      <p className="text-sm text-muted-foreground">Label</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -41,44 +40,49 @@ function ComboboxPopover({ getStatus }: ComboboxPopoverProps) {
             size="sm"
             className="w-[150px] justify-start"
           >
-            {selectedStatus ? (
+            {selectedLabel ? (
               <>
-                <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-                {selectedStatus.name}
+                <span
+                  className={`w-3 h-3 rounded-full bg-[${selectedLabel.color ? selectedLabel.color : "#000"}]`}
+                />
+                {selectedLabel.name}
               </>
             ) : (
-              <>+ Set status</>
+              <>+ Set label</>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0" side="right" align="start">
           <Command>
-            <CommandInput placeholder="Change status..." />
+            <CommandInput placeholder="Change label..." />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                {initialStatusTask.map((status) => (
+                {initialLabelTask.map((label) => (
                   <CommandItem
-                    key={status.value}
-                    value={status.value}
+                    key={label.value}
+                    value={label.value}
                     onSelect={(value) => {
-                      setSelectedStatus(
-                        initialStatusTask.find(
+                      setSelectedLabel(
+                        initialLabelTask.find(
                           (priority) => priority.value === value
-                        ) || initialStatusTask[0]
+                        ) || initialLabelTask[0]
                       );
                       setOpen(false);
                     }}
                   >
-                    <status.icon
+                    {/* <label.icon
                       className={cn(
                         "mr-2 h-4 w-4",
-                        status.value === selectedStatus?.value
+                        label.value === selectedLabel?.value
                           ? "opacity-100"
                           : "opacity-40"
                       )}
+                    /> */}
+                    <span
+                      className={`w-3 h-3 rounded-full bg-[${selectedLabel.color ? selectedLabel.color : "#000"}]`}
                     />
-                    <span>{status.name}</span>
+                    <span>{label.name}</span>
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -90,4 +94,4 @@ function ComboboxPopover({ getStatus }: ComboboxPopoverProps) {
   );
 }
 
-export default ComboboxPopover;
+export default ComboboxLabel;

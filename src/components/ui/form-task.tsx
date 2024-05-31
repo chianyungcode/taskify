@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { setTasksToLocal } from "../../utils/data-utils";
 import { useTasksStore } from "../../lib/zustand-store/tasks-store";
-import ComboboxPopover from "./combobox-popover";
+// import ComboboxPopover from "./combobox-popover";
 
 interface FormTaskProps {
   closeModal: () => void;
@@ -64,10 +64,10 @@ const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
           placeholder="Add description..."
         />
         <div className="flex gap-x-2 items-center">
-          <ComboboxPopover
+          {/* <ComboboxPopover
             statusByColumn={statusTask || "To do"}
-            getStatus={getStatus}
-          />
+            // getStatus={getStatus}
+          /> */}
           <input
             required
             type="text"

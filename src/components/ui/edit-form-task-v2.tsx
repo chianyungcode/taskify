@@ -2,13 +2,14 @@ import { useTasksStorev2 } from "@/lib/zustand-store/tasks-store-v2";
 import dayjs from "dayjs";
 import React from "react";
 import { Task } from "@/types";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
 
 interface EditFormTaskV2Props {
-  onClose: () => void;
   taskData: Task | null;
 }
 
-const EditFormTaskV2 = ({ onClose, taskData }: EditFormTaskV2Props) => {
+const EditFormTaskV2 = ({ taskData }: EditFormTaskV2Props) => {
+  const { isModalOpen, setIsModalOpen } = useModalStore((state) => state);
   const { updateTask, deleteTask } = useTasksStorev2((state) => state);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,8 +25,8 @@ const EditFormTaskV2 = ({ onClose, taskData }: EditFormTaskV2Props) => {
         startDate: new Date(formData.get("start-date") as string),
         endDate: new Date(formData.get("end-date") as string),
       };
-      // updateTask(taskData.id, editedTask);
-      onClose();
+      updateTask(taskData.id, editedTask);
+      setIsModalOpen(false);
     } else {
       console.error("Task ID is undefined");
     }
