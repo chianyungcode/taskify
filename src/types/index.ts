@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 
-enum Priority {
+export enum Priority {
   Urgent,
   High,
   Medium,
@@ -11,12 +11,14 @@ export type Label = {
   id: string;
   value: string;
   name: string;
+  color?: string;
 };
 
 export type Status = {
   id: string;
   value: string;
   name: string;
+  icon: LucideIcon;
 };
 
 export type Task = {
@@ -26,6 +28,8 @@ export type Task = {
   priority: Priority;
   status: Status;
   labels: Label[];
+  startDate: Date;
+  endDate: Date;
 };
 
 export type Category = {

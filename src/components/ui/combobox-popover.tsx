@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -14,25 +13,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { initialStatusTask } from "@/data/initData";
 import { useEffect, useState } from "react";
+import { Status } from "@/types";
 
 interface ComboboxPopoverProps {
-  statusByColumn: string;
-  getStatus: (status: string) => void;
+  getStatus: (status: Status) => void;
 }
 
-const statuses = ["To do", "In Progress", "Completed"];
-
-const ComboboxPopover = ({
-  statusByColumn,
-  getStatus,
-}: ComboboxPopoverProps) => {
+function ComboboxPopover({ getStatus }: ComboboxPopoverProps) {
   const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<string>("To do");
+  const [selectedStatus, setSelectedStatus] = useState<Status>(
+    initialStatusTask[0]
+  );
 
   useEffect(() => {
     getStatus(selectedStatus);
-  }, [selectedStatus, getStatus]);
+  }, [getStatus, selectedStatus]);
 
   return (
     <div className="flex items-center space-x-4">
@@ -44,42 +41,53 @@ const ComboboxPopover = ({
             size="sm"
             className="w-[150px] justify-start"
           >
-            {statusByColumn === undefined ? (
-              <>{selectedStatus}</>
+            {selectedStatus ? (
+              <>
+                <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
+                {selectedStatus.name}
+              </>
             ) : (
-              <>{statusByColumn}</>
+              <>+ Set status</>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0" side="right" align="start">
           <Command>
-            <CommandInput placeholder="Change status...">
-              <CommandList>
-                <CommandEmpty>No results found</CommandEmpty>
-                <CommandGroup>
-                  {statuses.map((status) => (
-                    <CommandItem
-                      key={status}
-                      value={status}
-                      onSelect={(value) => {
-                        setSelectedStatus(
-                          statuses.find((priority) => priority === value) ||
-                            "To do"
-                        );
-                        setOpen(false);
-                      }}
-                    >
-                      <span>{status}</span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </CommandInput>
+            <CommandInput placeholder="Change status..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                {initialStatusTask.map((status) => (
+                  <CommandItem
+                    key={status.value}
+                    value={status.value}
+                    onSelect={(value) => {
+                      setSelectedStatus(
+                        initialStatusTask.find(
+                          (priority) => priority.value === value
+                        ) || initialStatusTask[0]
+                      );
+                      setOpen(false);
+                    }}
+                  >
+                    <status.icon
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        status.value === selectedStatus?.value
+                          ? "opacity-100"
+                          : "opacity-40"
+                      )}
+                    />
+                    <span>{status.name}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
     </div>
   );
-};
+}
 
 export default ComboboxPopover;
