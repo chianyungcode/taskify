@@ -8,11 +8,10 @@ dayjs.extend(calendar);
 
 type CardV2Props = {
   task: Task;
-  icon: React.ElementType;
-  openModal: (id: string) => void;
+  openEditForm: (task: Task) => void;
 };
 
-const CardV2: React.FC<CardV2Props> = ({ task, icon: Icon, openModal }) => {
+const CardV2: React.FC<CardV2Props> = ({ task, openEditForm }) => {
   const formattedDate = {
     startDate: dayjs(task.startDate).calendar(null, dateDisplayFormats),
     endDate: dayjs(task.endDate).calendar(null, dateDisplayFormats),
@@ -21,7 +20,11 @@ const CardV2: React.FC<CardV2Props> = ({ task, icon: Icon, openModal }) => {
   return (
     <div
       className="bg-white rounded-md px-4 py-3 space-y-4 hover:bg-gray-50 transition-colors ease-out duration-1000"
-      onClick={() => openModal(task.id)}
+      onClick={() => {
+        console.log("Task ID From Card", task.id);
+
+        openEditForm(task);
+      }}
     >
       <header id="card-header" className="flex justify-between items-center">
         <h1 className="text-gray-400 text-sm">DEV-45</h1>
@@ -30,7 +33,7 @@ const CardV2: React.FC<CardV2Props> = ({ task, icon: Icon, openModal }) => {
         </div>
       </header>
       <section className="flex gap-x-2 items-center">
-        <Icon className="w-4 h-4 text-gray-400" />
+        {/* <status.icon className="w-4 h-4 text-gray-400" /> */}
         <p>{task.title}</p>
       </section>
       <section className="flex gap-x-2 items-center">

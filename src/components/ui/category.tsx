@@ -2,18 +2,19 @@ import { useState } from "react";
 
 import { ChevronDown, Plus } from "lucide-react";
 
-import { getTaskById } from "../../utils/data-utils-2";
+// import { getTaskById } from "../../utils/data-utils-2";
 import { cn } from "../../lib/cn";
 import { initialStatusTask } from "@/data/initData";
 
-import CustomModal from "./custom-modal";
 import CardV2 from "./card-v2";
-import EditFormTaskV2 from "./edit-form-task-v2";
-import FormTaskV2 from "./form-task-v2";
 
-import { Category as CategoryType, Task } from "@/types";
+import { Category as CategoryType, Status, Task } from "@/types";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
+import FormTaskV2 from "./form-task-v2";
+import CustomModal from "./custom-modal";
+import EditFormTaskV2 from "./edit-form-task-v2";
+
 interface CategoryProps {
   category: CategoryType;
   tasks: Task[];
@@ -24,37 +25,53 @@ const Category = ({ category, tasks }: CategoryProps) => {
   const { setStatusTask } = useStatusTaskStore((state) => state);
 
   const [isCollapse, setIsCollapse] = useState(false);
-  const [isFormTask, setIsFormTask] = useState(true);
-  const [taskDetails, setTaskDetails] = useState<Task | null>(null);
 
-  const handleModalOpen = (id?: string) => {
+  // Edit Form
+  const [taskToEdit, setTaskToEdit] = useState<Task>();
+  const [editFormOpen, setEditFormOpen] = useState(false);
+
+  const openModalCategory = () => {
+    updateStatusTask();
     setIsModalOpen(true);
-    if (id) {
-      setIsFormTask(false);
-      setTaskDetails(getTaskById(id));
-    } else {
-      setIsFormTask(true);
-    }
   };
 
-  const updateStatusTask = () => {
+  const openEditForm = (task: Task) => {
+    updateStatusTask(task.status);
+    setTaskToEdit(task);
+    setEditFormOpen(true);
+  };
+
+  const updateStatusTask = (status?: Status) => {
+    if (status) {
+      setStatusTask(status);
+    }
+
     const statusByCategory = initialStatusTask.find(
       (initialStatus) => category.value === initialStatus.value
     );
 
-    // !TODO ini perbaiki jangan pakai tanda seru
-    setStatusTask(statusByCategory!);
+    if (!statusByCategory) {
+      console.error("statusByCategory is undefined");
+      return;
+    }
+
+    setStatusTask(statusByCategory);
   };
 
   return (
     <>
+      {/* ! TODO PERLU DIREFACTOR  */}
       <CustomModal>
-        {isFormTask ? (
-          <FormTaskV2 />
-        ) : (
-          <EditFormTaskV2 taskData={taskDetails} />
-        )}
+        <FormTaskV2 />
       </CustomModal>
+
+      {taskToEdit && (
+        <EditFormTaskV2
+          task={taskToEdit}
+          isOpen={editFormOpen}
+          onClose={() => setEditFormOpen(false)}
+        />
+      )}
 
       <div className="border-dashed bg-[#F7F8F7] border-2 px-4 py-3 space-y-4 rounded-xl group">
         <div className="flex justify-between items-center">
@@ -71,33 +88,20 @@ const Category = ({ category, tasks }: CategoryProps) => {
               )}
               onClick={() => setIsCollapse(!isCollapse)}
             />
-            <Plus
-              className="w-4 h-4"
-              onClick={() => {
-                updateStatusTask();
-                handleModalOpen();
-              }}
-            />
+            <Plus className="w-4 h-4" onClick={openModalCategory} />
           </div>
         </div>
         {!isCollapse &&
           tasks.map((task) => (
             <div key={task.id}>
-              <CardV2
-                task={task}
-                icon={category.icon}
-                openModal={handleModalOpen}
-              />
+              <CardV2 task={task} openEditForm={openEditForm} />
             </div>
           ))}
         <div
           className={cn(
             "py-2 opacity-0 bg-white flex justify-center items-center rounded-lg group-hover:opacity-100 ease-out duration-300 transition-opacity cursor-pointer"
           )}
-          onClick={() => {
-            updateStatusTask();
-            handleModalOpen();
-          }}
+          onClick={openModalCategory}
         >
           <Plus className="w-4 h-4 text-gray-500" />
         </div>

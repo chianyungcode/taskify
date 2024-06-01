@@ -54,8 +54,8 @@ const FormTaskV2 = () => {
 
     addTask(newTask);
     setIsModalOpen(false);
+    event.currentTarget.reset();
   };
-
   const getLabel = (label: Label) => {
     setSelectedLabel(label);
   };

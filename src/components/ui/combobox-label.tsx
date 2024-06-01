@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { Label } from "@/types";
 
 interface ComboboxLabelProps {
-  getLabel: (label: Label) => void;
+  getLabel?: (label: Label) => void;
 }
 
 function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
@@ -27,7 +27,9 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
   );
 
   useEffect(() => {
-    getLabel(selectedLabel);
+    if (getLabel) {
+      getLabel(selectedLabel);
+    }
   }, [getLabel, selectedLabel]);
 
   return (

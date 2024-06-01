@@ -33,7 +33,7 @@ function ComboboxStatus() {
           >
             {statusTask ? (
               <>
-                <statusTask.icon className="mr-2 h-4 w-4 shrink-0" />
+                {/* <statusTask.icon className="mr-2 h-4 w-4 shrink-0" /> */}
                 {statusTask.name}
               </>
             ) : (

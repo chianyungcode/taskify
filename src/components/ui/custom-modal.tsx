@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { XIcon } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
@@ -9,10 +8,6 @@ interface CustomModalProps {
 
 const CustomModal = ({ children }: CustomModalProps) => {
   const { isModalOpen, setIsModalOpen } = useModalStore((state) => state);
-
-  useEffect(() => {
-    console.log("re render");
-  });
 
   return (
     <div
