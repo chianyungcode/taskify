@@ -1,18 +1,18 @@
-import { TaskType } from "@/types/task";
 import { CalendarClock } from "lucide-react";
 import dayjs from "dayjs";
 import calendar from "dayjs/plugin/calendar";
+
 import { dateDisplayFormats } from "@/lib/dayjs/options";
+import { Task } from "@/types";
 
 dayjs.extend(calendar);
 
 type CardProps = {
-  task: TaskType;
-  icon: React.ElementType;
-  openModal: (id: string) => void;
+  task: Task;
+  openEditForm: (task: Task) => void;
 };
 
-const Card: React.FC<CardProps> = ({ task, icon: Icon, openModal }) => {
+const Card: React.FC<CardProps> = ({ task, openEditForm }) => {
   const formattedDate = {
     startDate: dayjs(task.startDate).calendar(null, dateDisplayFormats),
     endDate: dayjs(task.endDate).calendar(null, dateDisplayFormats),
@@ -21,7 +21,11 @@ const Card: React.FC<CardProps> = ({ task, icon: Icon, openModal }) => {
   return (
     <div
       className="bg-white rounded-md px-4 py-3 space-y-4 hover:bg-gray-50 transition-colors ease-out duration-1000"
-      onClick={() => openModal(task.id)}
+      onClick={() => {
+        console.log("Task ID From Card", task.id);
+
+        openEditForm(task);
+      }}
     >
       <header id="card-header" className="flex justify-between items-center">
         <h1 className="text-gray-400 text-sm">DEV-45</h1>
@@ -30,8 +34,8 @@ const Card: React.FC<CardProps> = ({ task, icon: Icon, openModal }) => {
         </div>
       </header>
       <section className="flex gap-x-2 items-center">
-        <Icon className="w-4 h-4 text-gray-400" />
-        <p>{task.taskName}</p>
+        {/* <status.icon className="w-4 h-4 text-gray-400" /> */}
+        <p>{task.title}</p>
       </section>
       <section className="flex gap-x-2 items-center">
         <div className="border border-gray-200 rounded-md px-2 py-1 flex gap-x-1 items-center text-gray-500">
@@ -45,7 +49,7 @@ const Card: React.FC<CardProps> = ({ task, icon: Icon, openModal }) => {
         </div>
         <div className="border border-gray-200 rounded-md px-2 py-1 flex gap-x-1 items-center text-gray-500">
           <div className="rounded-full bg-rose-300 w-3 h-3"></div>
-          <p className="text-xs">{task.label}</p>
+          {/* <p className="text-xs">{task.label}</p> */}
         </div>
       </section>
     </div>

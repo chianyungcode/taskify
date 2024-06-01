@@ -6,14 +6,14 @@ import { ChevronDown, Plus } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { initialStatusTask } from "@/data/initData";
 
-import CardV2 from "./card-v2";
-
 import { Category as CategoryType, Status, Task } from "@/types";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
-import FormTaskV2 from "./form-task-v2";
 import CustomModal from "./custom-modal";
-import EditFormTaskV2 from "./edit-form-task-v2";
+
+import Card from "./card";
+import FormTask from "./form-task";
+import EditFormTask from "./edit-form-task";
 
 interface CategoryProps {
   category: CategoryType;
@@ -62,11 +62,11 @@ const Category = ({ category, tasks }: CategoryProps) => {
     <>
       {/* ! TODO PERLU DIREFACTOR  */}
       <CustomModal>
-        <FormTaskV2 />
+        <FormTask />
       </CustomModal>
 
       {taskToEdit && (
-        <EditFormTaskV2
+        <EditFormTask
           task={taskToEdit}
           isOpen={editFormOpen}
           onClose={() => setEditFormOpen(false)}
@@ -94,7 +94,7 @@ const Category = ({ category, tasks }: CategoryProps) => {
         {!isCollapse &&
           tasks.map((task) => (
             <div key={task.id}>
-              <CardV2 task={task} openEditForm={openEditForm} />
+              <Card task={task} openEditForm={openEditForm} />
             </div>
           ))}
         <div

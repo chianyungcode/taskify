@@ -1,42 +1,63 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { setTasksToLocal } from "../../utils/data-utils";
-import { useTasksStore } from "../../lib/zustand-store/tasks-store";
-// import ComboboxPopover from "./combobox-popover";
 
-interface FormTaskProps {
-  closeModal: () => void;
-  statusTask?: string;
-}
+import { Label, Task } from "@/types";
+import { initialLabelTask } from "@/data/initData";
 
-const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
+import { setTasksToLocal } from "@/utils/data-utils";
+import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
+
+import ComboboxLabel from "./combobox-label";
+import ComboboxStatus from "./combobox-status";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
+import { useTasksStore } from "@/lib/zustand-store/tasks-store";
+
+const FormTaskV2 = () => {
   const { tasks, addTask } = useTasksStore((state) => state);
-  const [selectedStatus, setSelectedStatus] = useState(statusTask || "");
+  const { statusTask } = useStatusTaskStore((state) => state);
+  const { setIsModalOpen } = useModalStore((state) => state);
+
+  const [selectedLabel, setSelectedLabel] = useState<Label>(
+    initialLabelTask[0]
+  );
 
   useEffect(() => {
     setTasksToLocal(tasks);
-  }, [tasks]);
+  }, [tasks, statusTask]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const newTask = {
+    const newTask: Task = {
       id: nanoid(),
-      taskName: formData.get("task-name") as string,
-      status: selectedStatus,
-      label: formData.get("label") as string,
+      title: formData.get("task-name") as string,
+      description: formData.get("description") as string,
+      priority: 1,
+      status: {
+        id: statusTask.id,
+        name: statusTask.name,
+        value: statusTask.value,
+        icon: statusTask.icon,
+      },
+      labels: [
+        {
+          id: selectedLabel.id,
+          name: selectedLabel.name,
+          value: selectedLabel.value,
+          color: selectedLabel.color,
+        },
+      ],
       startDate: new Date(formData.get("start-date") as string),
       endDate: new Date(formData.get("end-date") as string),
     };
 
     addTask(newTask);
-    closeModal();
+    setIsModalOpen(false);
+    event.currentTarget.reset();
   };
-
-  const getStatus = (status: string) => {
-    setSelectedStatus(status);
+  const getLabel = (label: Label) => {
+    setSelectedLabel(label);
   };
 
   return (
@@ -45,7 +66,6 @@ const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
         <h1 className="text-2xl font-semibold">Add Task</h1>
       </header>
       <form
-        action=""
         id="task-form"
         onSubmit={handleSubmit}
         className="space-y-2 flex flex-col"
@@ -64,18 +84,8 @@ const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
           placeholder="Add description..."
         />
         <div className="flex gap-x-2 items-center">
-          {/* <ComboboxPopover
-            statusByColumn={statusTask || "To do"}
-            // getStatus={getStatus}
-          /> */}
-          <input
-            required
-            type="text"
-            id="label"
-            name="label"
-            className="px-2 py-1 rounded-lg outline-none border border-gray-200"
-            placeholder="Label..."
-          />
+          <ComboboxStatus />
+          <ComboboxLabel getLabel={getLabel} />
           <input
             required
             type="datetime-local"
@@ -102,4 +112,4 @@ const FormTask = ({ closeModal, statusTask }: FormTaskProps) => {
   );
 };
 
-export default FormTask;
+export default FormTaskV2;

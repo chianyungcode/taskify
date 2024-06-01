@@ -1,15 +1,15 @@
-import { columns } from "../../data/initialData";
-import { TaskType } from "../../types/task";
+import { initialData } from "@/data/initData";
+import { Task } from "@/types";
 import { create } from "zustand";
 
 export type TasksState = {
-  tasks: TaskType[];
+  tasks: Task[];
   sortOrder: "asc" | "desc";
 };
 
 export type TasksActions = {
-  addTask: (newTask: TaskType) => void;
-  updateTask: (id: string, updatedTasks: TaskType) => void;
+  addTask: (newTask: Task) => void;
+  updateTask: (id: string, updatedTasks: Task) => void;
   deleteTask: (id: string) => void;
   sortTasks: () => void;
 };
@@ -18,22 +18,22 @@ export type TasksStore = TasksState & TasksActions;
 
 export const initialState: TasksState = {
   tasks:
-    typeof window !== "undefined"
-      ? (localStorage.getItem("tasks") === null &&
-          localStorage.setItem(
-            "tasks",
-            JSON.stringify(columns.flatMap((column) => column.taskItems[0]))
-          ),
-        JSON.parse(localStorage.getItem("tasks") || "[]"))
-      : [],
+    (localStorage.getItem("tasks") === null &&
+      localStorage.setItem(
+        "tasks",
+        JSON.stringify(
+          initialData.categories.flatMap((category) => category.tasks[0])
+        )
+      ),
+    JSON.parse(localStorage.getItem("tasks") || "[]")),
   sortOrder: "asc",
 };
 
 export const useTasksStore = create<TasksStore>((set) => ({
   ...initialState,
-  addTask: (newTask: TaskType) =>
+  addTask: (newTask: Task) =>
     set((state) => ({ tasks: [...state.tasks, newTask] })),
-  updateTask: (id: string, updatedData: TaskType) =>
+  updateTask: (id: string, updatedData: Task) =>
     set((state) => {
       const updatedTasks = state.tasks.map((task) => {
         if (task.id === id) {
