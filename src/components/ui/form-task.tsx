@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { nanoid } from "nanoid";
 
-import { Label, Task } from "@/types";
-import { initialLabelTask } from "@/data/initData";
+import { Task } from "@/types";
 
 import { setTasksToLocal } from "@/utils/data-utils";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
@@ -11,15 +10,13 @@ import ComboboxLabel from "./combobox-label";
 import ComboboxStatus from "./combobox-status";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useTasksStore } from "@/lib/zustand-store/tasks-store";
+import { useLabelStore } from "@/lib/zustand-store/label-store";
 
 const FormTaskV2 = () => {
   const { tasks, addTask } = useTasksStore((state) => state);
   const { statusTask } = useStatusTaskStore((state) => state);
   const { setIsModalOpen } = useModalStore((state) => state);
-
-  const [selectedLabel, setSelectedLabel] = useState<Label>(
-    initialLabelTask[0]
-  );
+  const { labels } = useLabelStore();
 
   useEffect(() => {
     setTasksToLocal(tasks);
@@ -40,14 +37,7 @@ const FormTaskV2 = () => {
         value: statusTask.value,
         icon: statusTask.icon,
       },
-      labels: [
-        {
-          id: selectedLabel.id,
-          name: selectedLabel.name,
-          value: selectedLabel.value,
-          color: selectedLabel.color,
-        },
-      ],
+      labels: labels,
       startDate: new Date(formData.get("start-date") as string),
       endDate: new Date(formData.get("end-date") as string),
     };
@@ -55,9 +45,6 @@ const FormTaskV2 = () => {
     addTask(newTask);
     setIsModalOpen(false);
     event.currentTarget.reset();
-  };
-  const getLabel = (label: Label) => {
-    setSelectedLabel(label);
   };
 
   return (
@@ -85,7 +72,7 @@ const FormTaskV2 = () => {
         />
         <div className="flex gap-x-2 items-center">
           <ComboboxStatus />
-          <ComboboxLabel getLabel={getLabel} />
+          <ComboboxLabel />
           <input
             required
             type="datetime-local"

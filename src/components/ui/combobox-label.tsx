@@ -13,24 +13,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { initialLabelTask } from "@/data/initData";
-import { useEffect, useState } from "react";
-import { Label } from "@/types";
+import { useLabelStore } from "@/lib/zustand-store/label-store";
+import { useState } from "react";
 
-interface ComboboxLabelProps {
-  getLabel?: (label: Label) => void;
-}
-
-function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
+function ComboboxLabel() {
   const [open, setOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<Label>(
-    initialLabelTask[0]
-  );
+  const { labels, setLabels } = useLabelStore();
 
-  useEffect(() => {
-    if (getLabel) {
-      getLabel(selectedLabel);
-    }
-  }, [getLabel, selectedLabel]);
+  const selectedLabel = labels.length > 0 ? labels[0] : null;
 
   return (
     <div className="flex items-center space-x-4">
@@ -46,9 +36,7 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
               <>
                 <span
                   style={{
-                    backgroundColor: selectedLabel.color
-                      ? selectedLabel.color
-                      : "#000",
+                    backgroundColor: selectedLabel.color || "#000",
                   }}
                   className="w-3 h-3 rounded-full"
                 />
@@ -71,17 +59,17 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
                     key={label.value}
                     value={label.value}
                     onSelect={(value) => {
-                      setSelectedLabel(
+                      setLabels([
                         initialLabelTask.find(
                           (priority) => priority.value === value
-                        ) || initialLabelTask[0]
-                      );
+                        ) || initialLabelTask[0],
+                      ]);
                       setOpen(false);
                     }}
                   >
                     <span
                       style={{
-                        backgroundColor: label.color ? label.color : "#000",
+                        backgroundColor: label.color || "#000",
                       }}
                       className="w-3 h-3 rounded-full"
                     />
