@@ -1,30 +1,36 @@
-# React + TypeScript + Vite
+# Todo List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Todo List App is a task management application that allows users to add, edit, and delete tasks. This application is built using React and TypeScript, along with several additional libraries to support its functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Add Task**: Users can add new tasks by filling out the provided form.
+- **Edit Task**: Users can edit existing tasks.
+- **Delete Task**: Users can delete tasks that are no longer needed.
+- **Sort Tasks**: Users can sort tasks by time.
+- **Local Storage**: Tasks are saved in local storage, so they remain available even if the application is refreshed.
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/username/todo-list-vite.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd todo-list-vite
+   ```
+3. Install dependencies:
+   ```bash
+   bun install
+   ```
 
-- Configure the top-level `parserOptions` property like this:
+## Running the Application
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+To run the application in development mode, use the following command:
+
+```bash
+bun dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+This will start the development server and open the application in your default browser.
