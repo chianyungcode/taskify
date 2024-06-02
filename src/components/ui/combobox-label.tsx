@@ -40,12 +40,17 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
           <Button
             variant="outline"
             size="sm"
-            className="w-[150px] justify-start"
+            className="w-[150px] space-x-2 justify-start"
           >
             {selectedLabel ? (
               <>
                 <span
-                  className={`w-3 h-3 rounded-full bg-[${selectedLabel.color ? selectedLabel.color : "#000"}]`}
+                  style={{
+                    backgroundColor: selectedLabel.color
+                      ? selectedLabel.color
+                      : "#000",
+                  }}
+                  className="w-3 h-3 rounded-full"
                 />
                 {selectedLabel.name}
               </>
@@ -62,6 +67,7 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
               <CommandGroup>
                 {initialLabelTask.map((label) => (
                   <CommandItem
+                    className="flex items-center space-x-2"
                     key={label.value}
                     value={label.value}
                     onSelect={(value) => {
@@ -73,16 +79,11 @@ function ComboboxLabel({ getLabel }: ComboboxLabelProps) {
                       setOpen(false);
                     }}
                   >
-                    {/* <label.icon
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        label.value === selectedLabel?.value
-                          ? "opacity-100"
-                          : "opacity-40"
-                      )}
-                    /> */}
                     <span
-                      className={`w-3 h-3 rounded-full bg-[${selectedLabel.color ? selectedLabel.color : "#000"}]`}
+                      style={{
+                        backgroundColor: label.color ? label.color : "#000",
+                      }}
+                      className="w-3 h-3 rounded-full"
                     />
                     <span>{label.name}</span>
                   </CommandItem>

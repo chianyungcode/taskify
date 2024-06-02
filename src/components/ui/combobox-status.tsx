@@ -23,7 +23,7 @@ function ComboboxStatus() {
 
   return (
     <div className="flex items-center space-x-4">
-      <p className="text-sm text-muted-foreground">Status</p>
+      {/* <p className="text-sm text-muted-foreground">Status</p> */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -33,7 +33,7 @@ function ComboboxStatus() {
           >
             {statusTask ? (
               <>
-                {/* <statusTask.icon className="mr-2 h-4 w-4 shrink-0" /> */}
+                <statusTask.icon className="mr-2 h-4 w-4 shrink-0" />
                 {statusTask.name}
               </>
             ) : (

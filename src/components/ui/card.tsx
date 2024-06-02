@@ -22,8 +22,6 @@ const Card: React.FC<CardProps> = ({ task, openEditForm }) => {
     <div
       className="bg-white rounded-md px-4 py-3 space-y-4 hover:bg-gray-50 transition-colors ease-out duration-1000"
       onClick={() => {
-        console.log("Task ID From Card", task.id);
-
         openEditForm(task);
       }}
     >

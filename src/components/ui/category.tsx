@@ -1,16 +1,16 @@
+// External Libraries
 import { useState } from "react";
-
 import { ChevronDown, Plus } from "lucide-react";
 
-// import { getTaskById } from "../../utils/data-utils-2";
+// Internal Libraries
 import { cn } from "../../lib/cn";
 import { initialStatusTask } from "@/data/initData";
-
 import { Category as CategoryType, Status, Task } from "@/types";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
-import CustomModal from "./custom-modal";
 
+// Components
+import CustomModal from "./custom-modal";
 import Card from "./card";
 import FormTask from "./form-task";
 import EditFormTask from "./edit-form-task";

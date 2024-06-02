@@ -5,7 +5,6 @@ import ComboboxStatus from "./combobox-status";
 import { XIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
 import ComboboxLabel from "./combobox-label";
-import { useEffect } from "react";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
 import { useTasksStore } from "@/lib/zustand-store/tasks-store";
 
@@ -41,11 +40,6 @@ const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
     }
   };
 
-  useEffect(() => {
-    console.log("task: ", task);
-    console.log("task.startDate", task.startDate);
-  }, [task]);
-
   if (!task) return null;
 
   return (
@@ -70,9 +64,9 @@ const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
             <XIcon className="w-4 h-4" onClick={onClose} />
           </div>
           {/* children */}
-          <header>
+          {/* <header>
             <h1 className="text-xl font-semibold">Edit Task</h1>
-          </header>
+          </header> */}
           <form
             action=""
             id="task-form"
