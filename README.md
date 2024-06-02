@@ -34,3 +34,12 @@ bun dev
 ```
 
 This will start the development server and open the application in your default browser.
+
+## Tech Stack
+
+- React: A JavaScript library for building user interfaces.
+- TypeScript: A typed superset of JavaScript that adds optional static typing.
+- Vite: A build tool that makes it easy to build modern web applications.
+  Tanstack Router: A library for building single-page applications with routing.
+- Tailwind CSS: A utility-first CSS framework that provides a consistent and responsive design system.
+- Shadcn UI: A collection of React components that follow the Tailwind CSS design system.
