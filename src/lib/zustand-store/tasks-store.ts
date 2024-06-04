@@ -1,4 +1,4 @@
-import { initialData } from "@/data/initData";
+import { initialData } from "@/data/initial-data";
 import { Task } from "@/types";
 import { create } from "zustand";
 

@@ -8,7 +8,7 @@ import {
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
 
-import { initialStatusTask } from "@/data/initData";
+import { initialStatusTask } from "@/data/initial-data";
 import { useTasksStore } from "@/lib/zustand-store/tasks-store";
 
 const TabHeader = () => {

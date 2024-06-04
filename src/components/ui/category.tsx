@@ -4,7 +4,7 @@ import { ChevronDown, Plus } from "lucide-react";
 
 // Internal Libraries
 import { cn } from "../../lib/cn";
-import { initialStatusTask } from "@/data/initData";
+import { initialStatusTask } from "@/data/initial-data";
 import { Category as CategoryType, Status, Task } from "@/types";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";

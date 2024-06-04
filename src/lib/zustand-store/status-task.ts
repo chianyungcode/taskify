@@ -1,4 +1,4 @@
-import { initialStatusTask } from "@/data/initData";
+import { initialStatusTask } from "@/data/initial-data";
 import { Status } from "@/types";
 import { create } from "zustand";
 

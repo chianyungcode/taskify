@@ -1,4 +1,4 @@
-import { initialLabelTask } from "@/data/initData";
+import { initialLabelTask } from "@/data/initial-data";
 import { Label } from "@/types";
 import { create } from "zustand";
 

@@ -7,6 +7,8 @@ import { cn } from "@/lib/cn";
 import ComboboxLabel from "./combobox-label";
 import { useStatusTaskStore } from "@/lib/zustand-store/status-task";
 import { useTasksStore } from "@/lib/zustand-store/tasks-store";
+import { useLabelStore } from "@/lib/zustand-store/label-store";
+import { useEffect } from "react";
 
 interface EditFormTaskProps {
   task: Task;
@@ -17,6 +19,7 @@ interface EditFormTaskProps {
 const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
   const { updateTask, deleteTask } = useTasksStore();
   const { statusTask } = useStatusTaskStore();
+  const { labels, setLabels } = useLabelStore();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +32,7 @@ const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
         description: formData.get("description") as string,
         priority: 1,
         status: statusTask,
-        labels: [],
+        labels: [...labels],
         startDate: new Date(formData.get("start-date") as string),
         endDate: new Date(formData.get("end-date") as string),
       };
@@ -39,6 +42,10 @@ const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
       console.error("Task ID is undefined");
     }
   };
+
+  useEffect(() => {
+    setLabels([...task.labels]);
+  }, [setLabels, task]);
 
   if (!task) return null;
 
@@ -63,10 +70,6 @@ const EditFormTask = ({ task, isOpen, onClose }: EditFormTaskProps) => {
           <div className="flex justify-end">
             <XIcon className="w-4 h-4" onClick={onClose} />
           </div>
-          {/* children */}
-          {/* <header>
-            <h1 className="text-xl font-semibold">Edit Task</h1>
-          </header> */}
           <form
             action=""
             id="task-form"

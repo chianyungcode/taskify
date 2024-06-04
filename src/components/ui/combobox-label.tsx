@@ -12,14 +12,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { initialLabelTask } from "@/data/initData";
+import { initialLabelTask } from "@/data/initial-data";
 import { useLabelStore } from "@/lib/zustand-store/label-store";
 import { useState } from "react";
 
 function ComboboxLabel() {
   const [open, setOpen] = useState(false);
   const { labels, setLabels } = useLabelStore();
-
   const selectedLabel = labels.length > 0 ? labels[0] : null;
 
   return (

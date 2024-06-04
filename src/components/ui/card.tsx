@@ -5,6 +5,8 @@ import calendar from "dayjs/plugin/calendar";
 import { dateDisplayFormats } from "@/lib/dayjs/options";
 import { Task } from "@/types";
 
+import { useEffect } from "react";
+
 dayjs.extend(calendar);
 
 type CardProps = {
@@ -17,6 +19,10 @@ const Card: React.FC<CardProps> = ({ task, openEditForm }) => {
     startDate: dayjs(task.startDate).calendar(null, dateDisplayFormats),
     endDate: dayjs(task.endDate).calendar(null, dateDisplayFormats),
   };
+
+  useEffect(() => {
+    console.log(task.labels[0].color);
+  }, [task]);
 
   return (
     <div
@@ -46,8 +52,11 @@ const Card: React.FC<CardProps> = ({ task, openEditForm }) => {
           </time>
         </div>
         <div className="border border-gray-200 rounded-md px-2 py-1 flex gap-x-1 items-center text-gray-500">
-          <div className="rounded-full bg-rose-300 w-3 h-3"></div>
-          {/* <p className="text-xs">{task.label}</p> */}
+          <div
+            style={{ backgroundColor: task.labels[0].color }}
+            className="rounded-full w-3 h-3"
+          ></div>
+          <p className="text-xs">{task.labels[0].name}</p>
         </div>
       </section>
     </div>

@@ -28,16 +28,11 @@ const FormTaskV2 = () => {
     const formData = new FormData(event.currentTarget);
     const newTask: Task = {
       id: nanoid(),
-      title: formData.get("task-name") as string,
+      title: formData.get("task-title") as string,
       description: formData.get("description") as string,
       priority: 1,
-      status: {
-        id: statusTask.id,
-        name: statusTask.name,
-        value: statusTask.value,
-        icon: statusTask.icon,
-      },
-      labels: labels,
+      status: statusTask,
+      labels: [...labels],
       startDate: new Date(formData.get("start-date") as string),
       endDate: new Date(formData.get("end-date") as string),
     };
@@ -59,8 +54,8 @@ const FormTaskV2 = () => {
       >
         <input
           type="text"
-          id="task-name"
-          name="task-name"
+          id="task-title"
+          name="task-title"
           className="px-2 py-1 rounded-lg outline-none border-none text-xl border-gray-200 w-full font-medium"
           placeholder="Task title"
         />
