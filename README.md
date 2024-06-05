@@ -1,4 +1,4 @@
-# Todo List App
+# Taskify
 
 Todo List App is a task management application that allows users to add, edit, and delete tasks. This application is built using React and TypeScript, along with several additional libraries to support its functionality.
 
