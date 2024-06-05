@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({ task, openEditForm }) => {
 
   return (
     <div
-      className="bg-white rounded-md px-4 py-3 space-y-4 hover:bg-gray-50 transition-colors ease-out duration-1000"
+      className="bg-white rounded-md px-4  py-3 space-y-4 hover:bg-gray-50 transition-colors ease-out duration-300"
       onClick={() => {
         openEditForm(task);
       }}

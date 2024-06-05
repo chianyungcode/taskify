@@ -23,7 +23,6 @@ function ComboboxLabel() {
 
   return (
     <div className="flex items-center space-x-4">
-      <p className="text-sm text-muted-foreground">Label</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

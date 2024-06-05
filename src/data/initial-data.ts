@@ -11,19 +11,19 @@ export const initialLabelTask: Label[] = [
     id: "A4sEuBWj4oL9L2F",
     value: "PERSONAL",
     name: "Personal",
-    color: "#FF5733",
+    color: "#F16D74",
   },
   {
     id: "ja_ZK2tHeC5oRAN",
     value: "SCHOOL",
     name: "School",
-    color: "#33FF57",
+    color: "#C3E88D",
   },
   {
     id: "RjDW-Npq6_U_uRU",
     value: "WORK",
     name: "Work",
-    color: "#3357FF",
+    color: "#92D5F3",
   },
 ];
 
